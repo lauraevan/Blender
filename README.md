@@ -37,3 +37,9 @@ The upstream code is pulled unchanged from the official [Blender](https://projec
 5. **Runtime:** embedded Python, file APIs, background processing, render integration.
 
 A working HTML page that invokes a native utility function is a toolchain proof, not completion of stages 2–5.
+
+## Experimental full Blender/WebGPU build
+
+We've integrated [HeyPuter/blender-wasm](https://github.com/HeyPuter/blender-wasm) as a **pinned external build dependency** so we can tackle the actual Blender application instead of just a standalone WASM math demo. Unlike our `v5.2.2` stable source target, its patched fork currently uses Blender 5.3 development sources.
+
+Run `bash scripts/puter-browser.sh inspect` to check and fetch the pinned source. When equipped with a full Emscripten toolchain and enough disk/memory, run `bash scripts/puter-browser.sh launch` to attempt building, packaging, and serving the full Blender application. This full application build is **not yet validated**. See [the complete architecture and validation status](docs/full-webgpu-port.md).
