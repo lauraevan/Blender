@@ -1,0 +1,33 @@
+name: Blender 5.2.2 WASM core
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: System tools
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build git-lfs
+      - name: Install Emscripten
+        uses: emscripten-core/setup-emsdk@v16
+        with:
+          version: 5.0.1
+      - name: Fetch pinned official Blender source
+        run: ./scripts/fetch-blender.sh
+      - name: Compile and test Blender C++ natively
+        run: ./scripts/test-native.sh
+      - name: Compile Blender C++ to WebAssembly
+        run: ./scripts/build-wasm.sh
+      - name: Run WebAssembly ABI smoke tests
+        run: node tests/wasm-smoke.mjs
+      - name: Archive local-browser test
+        uses: actions/upload-artifact@v4
+        with:
+          name: blender-5.2.2-wasm-browser-smoke
+          path: dist/
