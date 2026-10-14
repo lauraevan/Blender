@@ -1,0 +1,8 @@
+{
+  "name": "blender-browser-port",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "build": "bash scripts/fetch-puter-release.sh full-dist"
+  }
+}
