@@ -59,3 +59,27 @@ The upstream Vite server applies `Cross-Origin-Opener-Policy` and `Cross-Origin-
 **A WebGL cube on our existing Vercel preview is a diagnostic and not Blender's editor.** The successful app acceptance test is: patched Blender WASM initializes, Blender window manager and editor draw frames, input operates actual Blender tools, and a Blender-produced `.blend` file can be opened and saved.
 
 This is a stepping stone towards backporting browser-specific changes to stable 5.2.2, rather than claiming the 5.3 fork is the requested release.
+
+
+## Verified runtime attempt (October 13–14, 2026)
+
+- Published HeyPuter `1.0.0/blender6.tar.gz` SHA-256 verified:
+  `4e26d44734d7838300c9849c0f1d673d6fd0460e826af04e72879afac0cbf0f1`.
+- Full release assets, Emscripten loader, and compressed WASM were hosted together with
+  COOP/COEP headers; all primary assets returned HTTP 200.
+- Automated Chromium with SwiftShader passed WebGPU detection, downloaded/unpacked
+  both archives, loaded `blender.js`, acquired a WebGPU device and emitted the
+  first-content signal (the canvas became `ready`).
+- **Visual acceptance still fails:** after 25 seconds the headless screenshot
+  was 99.87% white. Native rendering-loop activity does not alone establish a
+  usable editor UI. A Python asset-library import also reported
+  `ModuleNotFoundError: No module named '_multiprocessing'`.
+- Render service `blender-web-native` was created, but its build was canceled
+  because the Render workspace had no remaining build minutes. Vercel Git
+  connection to the owner team returned HTTP 403. These are hosting/account
+  blockers, not a native build compilation result.
+- Experimental WebAssembly application source remains Blender 5.3 development;
+  Blender **5.2.2 stable full GUI has not been ported**.
+
+Use `tests/full-launch.cjs` for a visible UI check on hardware-accelerated Chrome.
+See `docs/launch-status.md` for reproducible launch and deployment instructions.
