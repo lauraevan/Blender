@@ -1,0 +1,5 @@
+third_party/
+build/
+dist/
+.DS_Store
+*.log
