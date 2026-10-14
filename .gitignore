@@ -3,3 +3,7 @@ build/
 dist/
 .DS_Store
 *.log
+full-dist/
+full-web/
+test-artifacts/
+.vercel/
