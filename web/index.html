@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Blender · WebAssembly Port</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main>
+    <canvas id="viewport" aria-label="3D WebGL2 diagnostic viewport"></canvas>
+    <header><strong>Blender</strong><span>5.2.2 · WEBASSEMBLY CORE</span><b id="status">Loading native runtime…</b></header>
+    <aside>
+      <small>PORT DEVELOPMENT · MILESTONE 01</small>
+      <h1>Native code in the browser.</h1>
+      <p>This viewport uses FP16 geometry packed by <strong>Blender's original blenlib C++</strong> compiled to WebAssembly.</p>
+      <dl>
+        <div><dt>Source</dt><dd>Blender v5.2.2</dd></div>
+        <div><dt>Compiled library</dt><dd>blenlib math_half</dd></div>
+        <div><dt>FP16 smoke</dt><dd id="test">Pending</dd></div>
+      </dl>
+      <p class="note">This is a graphics and native ABI test, not a functional Blender editor yet.</p>
+    </aside>
+    <footer>Drag to orbit · Scroll to zoom · Local WASM execution · No streaming</footer>
+  </main>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
