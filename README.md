@@ -1,0 +1,39 @@
+# Blender Web (experimental port)
+
+An in-browser WebAssembly port effort targeting **Blender 5.2.2 LTS**.
+
+This repository builds **real Blender C++ source** into a browser-loadable WASM module. The first milestone extracts Blender's `blenlib` FP16 conversion implementation so we can verify the compiler, ABI, WebAssembly/JavaScript bridge, and browser runtime before attempting the full application.
+
+**Current status:** Foundation only. This is **not** a working Blender editor and is **not** a streamed desktop or a cloned interface. Full Blender requires substantial changes to GPU/windowing APIs, file access, threading, Python, dependencies, and UI integration.
+
+## Quick start
+
+Install Git, CMake 3.20+, Ninja, Python 3, and [Emscripten SDK](https://emscripten.org/docs/getting_started/downloads.html). Activate emsdk so `emcmake` and `em++` are on PATH.
+
+```bash
+./scripts/fetch-blender.sh
+./scripts/build-wasm.sh
+python3 -m http.server 8000 --directory dist
+```
+
+Visit http://localhost:8000. The build produces `dist/blender_core.js` and `dist/blender_core.wasm`. It embeds code compiled from the Blender source checkout, with a minimal diagnostic page to prove the native code is running in the browser.
+
+For native smoke checks (without Emscripten):
+
+```bash
+./scripts/test-native.sh
+```
+
+## Source and license
+
+The upstream code is pulled unchanged from the official [Blender](https://projects.blender.org/blender/blender) release tag `v5.2.2`, and remains copyright its respective authors under GPL-2.0-or-later. The bridge and support code in this repo is GPL-2.0-or-later as well. Upstream source is not vendored into this initial foundation commit. See [COPYING](COPYING).
+
+## Port stages
+
+1. **WASM toolchain:** compile and execute actual Blender math routines in a web browser (this repository).
+2. **Blender data layer:** portable Blend-file loading, DNA/RNA and internal memory/data dependencies.
+3. **Geometry and scene graph:** BMesh, mesh operators, modifiers, scene state.
+4. **GPU and windowing:** browser WebGPU/WebGL2 backend, event loop, input, and UI abstraction.
+5. **Runtime:** embedded Python, file APIs, background processing, render integration.
+
+A working HTML page that invokes a native utility function is a toolchain proof, not completion of stages 2–5.
