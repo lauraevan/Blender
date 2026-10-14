@@ -1,10 +1,21 @@
 # Blender Web (experimental port)
 
-An in-browser WebAssembly port effort targeting **Blender 5.2.2 LTS**.
+An in-browser WebAssembly port effort with two separate paths: official **Blender 5.2.2 LTS** native-source compilation, and an experimental full WebGPU application from HeyPuter's **Blender 5.3 development fork**.
 
 This repository builds **real Blender C++ source** into a browser-loadable WASM module. The first milestone extracts Blender's `blenlib` FP16 conversion implementation so we can verify the compiler, ABI, WebAssembly/JavaScript bridge, and browser runtime before attempting the full application.
 
-**Current status:** Foundation only. This is **not** a working Blender editor and is **not** a streamed desktop or a cloned interface. Full Blender requires substantial changes to GPU/windowing APIs, file access, threading, Python, dependencies, and UI integration.
+**Current status:** The 5.2.2 native-core compiler proof is verified. The full experimental 5.3 browser runtime is packaged separately from HeyPuter's published release. A browser test successfully initialized native WASM/WebGPU and emitted a first-content signal, **but the headless software-GPU screenshot was almost completely white**. Interactive editor functionality remains unverified. This is not cloud streaming or a fake UI.
+
+## Run the full experimental Blender browser build
+
+```bash
+npm run build
+node server/blender-server.mjs
+```
+
+Open `http://localhost:8080` in a recent desktop Chrome/Edge with working **hardware WebGPU**. The build fetches a checksum-verified upstream Blender WASM release (~58 MB download), extracts it to `full-dist`, and serves it with the COOP/COEP headers required by WebAssembly threads. It does not rebuild the entire native application from official 5.2.2 sources. See [full launch status](docs/launch-status.md). The native WebAssembly core smoke test remains under `web/`.
+
+To verify more than a WebGPU startup message, install `puppeteer` and `pngjs` locally and run `node tests/full-launch.cjs`. Its screenshot-based white-screen check is deliberately stricter than the upstream first-content indicator.
 
 ## Quick start
 
